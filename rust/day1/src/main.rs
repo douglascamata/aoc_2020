@@ -2,6 +2,8 @@ use itertools::Itertools;
 use std::fs::read_to_string;
 
 fn main() {
+    // I got curious about comparing the performances of borrowing and not-borrowing so I
+    // implemented both functions and a very rudimentar timer.
     let file = read_to_string("input.txt").expect("couldn't read input file");
     let lines = file.lines().collect::<Vec<_>>();
     println!("Input size (in lines): {}", file.lines().count());
