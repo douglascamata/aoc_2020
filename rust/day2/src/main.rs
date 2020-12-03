@@ -2,7 +2,7 @@ use std::fs::read_to_string;
 use verex::{Expression, Verex};
 
 struct RecoveredPassword {
-    rule: PasswordPolicy,
+    policy: PasswordPolicy,
     password: String,
 }
 
@@ -26,18 +26,18 @@ impl RecoveredPassword {
             char: captures.at(4).unwrap().parse().unwrap(),
         };
         let recovered = RecoveredPassword {
-            rule: policy,
+            policy,
             password: captures.at(5).unwrap().to_string(),
         };
         recovered
     }
 
     fn validate_part1(&self) -> bool {
-        self.rule.validate_password_part1(&self.password)
+        self.policy.validate_password_part1(&self.password)
     }
 
     fn validate_part2(&self) -> bool {
-        self.rule.validate_password_part2(&self.password)
+        self.policy.validate_password_part2(&self.password)
     }
 }
 
@@ -87,7 +87,7 @@ fn main() {
 #[test]
 fn test_check_password_part1() {
     assert!(RecoveredPassword {
-        rule: PasswordPolicy {
+        policy: PasswordPolicy {
             min: 1,
             max: 3,
             char: 'a',
@@ -97,7 +97,7 @@ fn test_check_password_part1() {
     .validate_part1());
 
     assert!(!RecoveredPassword {
-        rule: PasswordPolicy {
+        policy: PasswordPolicy {
             min: 1,
             max: 3,
             char: 'b',
@@ -107,7 +107,7 @@ fn test_check_password_part1() {
     .validate_part1());
 
     assert!(RecoveredPassword {
-        rule: PasswordPolicy {
+        policy: PasswordPolicy {
             min: 2,
             max: 9,
             char: 'c',
@@ -120,7 +120,7 @@ fn test_check_password_part1() {
 #[test]
 fn test_check_password_part2() {
     assert!(RecoveredPassword {
-        rule: PasswordPolicy {
+        policy: PasswordPolicy {
             min: 1,
             max: 3,
             char: 'a',
@@ -130,7 +130,7 @@ fn test_check_password_part2() {
     .validate_part2());
 
     assert!(!RecoveredPassword {
-        rule: PasswordPolicy {
+        policy: PasswordPolicy {
             min: 1,
             max: 3,
             char: 'b',
@@ -140,7 +140,7 @@ fn test_check_password_part2() {
     .validate_part2());
 
     assert!(!RecoveredPassword {
-        rule: PasswordPolicy {
+        policy: PasswordPolicy {
             min: 2,
             max: 9,
             char: 'c',
@@ -155,7 +155,7 @@ fn test_recovered_password_parser() {
     let rec_password = String::from("1-3 a: abcde");
     let parsed_rec_password = RecoveredPassword::from_string(rec_password);
     assert_eq!(parsed_rec_password.password, "abcde");
-    assert_eq!(parsed_rec_password.rule.char, 'a');
-    assert_eq!(parsed_rec_password.rule.min, 1);
-    assert_eq!(parsed_rec_password.rule.max, 3);
+    assert_eq!(parsed_rec_password.policy.char, 'a');
+    assert_eq!(parsed_rec_password.policy.min, 1);
+    assert_eq!(parsed_rec_password.policy.max, 3);
 }
