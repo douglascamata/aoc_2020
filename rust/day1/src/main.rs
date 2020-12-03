@@ -30,9 +30,9 @@ fn day1_no_borrow(lines: Vec<&str>, comb: usize) -> i32 {
     result as i32
 }
 
-fn day1_borrow(lines: &Vec<&str>, comb: usize) -> i32 {
+fn day1_borrow(lines: &[&str], comb: usize) -> i32 {
     let start = std::time::Instant::now();
-    let numbers = lines.into_iter().map(|n| n.parse::<i32>().unwrap());
+    let numbers = lines.iter().map(|n| n.parse::<i32>().unwrap());
     let combinations = numbers.combinations(comb);
 
     let result = combinations
