@@ -35,9 +35,7 @@ impl GroupAnswers<'_> {
         let mut unique_questions_answered: HashMap<char, bool> = HashMap::new();
         self.answers.iter().for_each(|&member_answers| {
             member_answers.chars().for_each(|c| {
-                if !unique_questions_answered.contains_key(&c) {
-                    unique_questions_answered.insert(c, true);
-                };
+                unique_questions_answered.entry(c).or_insert(true);
             })
         });
         unique_questions_answered.len() as i32
