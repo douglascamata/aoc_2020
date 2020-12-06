@@ -8,11 +8,11 @@ fn main() {
         .map(|l| SeatCode::from(l.trim().to_string()).seat_id())
         .collect();
 
-    println!("max seat id: {}", seat_ids.into_iter().max().unwrap());
+    println!("max seat id: {}", seat_ids.iter().max().unwrap());
 
     for seat_id in seat_ids {
-        let next_id_empty = seat_ids.into_iter().all(|id| *id != seat_id + 1);
-        let next_next_busy = seat_ids.into_iter().any(|id| *id == seat_id + 2);
+        let next_id_empty = seat_ids.iter().all(|id| *id != seat_id + 1);
+        let next_next_busy = seat_ids.iter().any(|id| *id == seat_id + 2);
         if next_id_empty && next_next_busy {
             eprintln!("Your seat id is: {}", seat_id + 1);
             break;
@@ -31,11 +31,11 @@ impl SeatCode {
     const MAX_COLUMN: i32 = 7;
 
     fn find_row(&self) -> i32 {
-        self.binary_space_partition(Self::MAX_ROW.clone(), 'F', 'B', &self.row_code)
+        self.binary_space_partition(Self::MAX_ROW, 'F', 'B', &self.row_code)
     }
 
     fn find_column(&self) -> i32 {
-        self.binary_space_partition(Self::MAX_COLUMN.clone(), 'L', 'R', &self.column_code)
+        self.binary_space_partition(Self::MAX_COLUMN, 'L', 'R', &self.column_code)
     }
 
     fn seat_id(&self) -> i32 {
@@ -47,7 +47,7 @@ impl SeatCode {
         max: i32,
         low_half_code: char,
         upper_half_code: char,
-        input: &Vec<char>,
+        input: &[char],
     ) -> i32 {
         let mut upper_bound = max;
         let mut lower_bound = 0;

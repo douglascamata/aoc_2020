@@ -7,7 +7,7 @@ fn main() {
     let start = time::Instant::now();
     let results = CredentialsValidator::validate_batch(&input_string);
     let total = results.len();
-    let valid_passports = results.iter().filter(|&&r| r == true).count();
+    let valid_passports = results.iter().filter(|&&r| r).count();
     eprintln!("elapsed: {:?}", start.elapsed());
     println!("found {} valid passports out of {}", valid_passports, total);
 }
@@ -36,7 +36,7 @@ impl Credentials {
     ];
 
     fn has_valid_fields(&self) -> bool {
-        Self::FIELD_VALIDATION_FUNCS.iter().all(|f| f(self) == true)
+        Self::FIELD_VALIDATION_FUNCS.iter().all(|f| f(self))
     }
 
     fn valid_byr(&self) -> bool {
@@ -82,10 +82,7 @@ impl Credentials {
             .capture_expr(E::String("^#[a-f|0-9]{6}$"))
             .compile()
             .unwrap();
-        match hcl_regex.captures(self.hcl.as_str()) {
-            None => false,
-            Some(_) => true,
-        }
+        hcl_regex.captures(self.hcl.as_str()).is_some()
     }
 
     fn valid_ecl(&self) -> bool {
@@ -97,10 +94,7 @@ impl Credentials {
             .capture_expr(E::String("^\\d{9}$"))
             .compile()
             .unwrap();
-        match pid_regex.captures(self.pid.as_str()) {
-            None => false,
-            Some(_) => true,
-        }
+        pid_regex.captures(self.pid.as_str()).is_some()
     }
 }
 
@@ -116,8 +110,8 @@ impl From<CredentialInput> for Credentials {
             pid: "".to_string(),
         };
         input
-            .split(" ")
-            .map(|key_value| key_value.split(":").collect::<Vec<&str>>())
+            .split(' ')
+            .map(|key_value| key_value.split(':').collect::<Vec<&str>>())
             .for_each(|values| match values[0] {
                 "byr" => credentials.byr = values[1].parse().unwrap(),
                 "iyr" => credentials.iyr = values[1].parse().unwrap(),
@@ -160,12 +154,12 @@ impl CredentialsValidator {
                 reader_acc = String::new();
                 continue;
             }
-            reader_acc.push_str(" ");
+            reader_acc.push(' ');
             reader_acc.push_str(line);
         }
         validation_results.push(Self { input: reader_acc }.is_valid());
 
-        return validation_results;
+        validation_results
     }
 }
 
@@ -239,7 +233,7 @@ eyr:2038 hcl:74454a iyr:2023
 pid:3556412378 byr:2007"#;
 
     let results = CredentialsValidator::validate_batch(invalid_input);
-    assert!(results.iter().all(|&r| r == false));
+    assert!(results.iter().all(|&r| !r));
 
     let valid_input = r#"pid:087499704 hgt:74in ecl:grn iyr:2012 eyr:2030 byr:1980
 hcl:#623a2f
@@ -255,5 +249,5 @@ eyr:2022
 iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719"#;
 
     let results = CredentialsValidator::validate_batch(valid_input);
-    assert!(results.iter().all(|&r| r == true))
+    assert!(results.iter().all(|&r| r))
 }

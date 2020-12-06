@@ -99,16 +99,13 @@ impl Toboggan {
 
     fn process_arrival(&mut self, dest_y: usize, dest_x: usize) -> char {
         let at_destination = self.map[dest_y][dest_x];
-        let arrival_change = {
-            match at_destination {
-                '#' => {
-                    self.tree_count += 1;
-                    'X'
-                }
-                _ => 'O',
+        match at_destination {
+            '#' => {
+                self.tree_count += 1;
+                'X'
             }
-        };
-        arrival_change
+            _ => 'O',
+        }
     }
 }
 
