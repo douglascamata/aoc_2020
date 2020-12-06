@@ -139,8 +139,8 @@ struct CredentialsValidator {
 impl CredentialsValidator {
     const REQUIRED_FIELDS: [&'static str; 7] = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"];
 
-    fn is_valid(self) -> bool {
-        self.is_valid_credential() && Credentials::from(self.input).has_valid_fields()
+    fn is_valid(&self) -> bool {
+        self.is_valid_credential() && Credentials::from(self.input.clone()).has_valid_fields()
     }
 
     fn is_valid_credential(&self) -> bool {
