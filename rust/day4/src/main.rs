@@ -86,7 +86,7 @@ impl Credentials {
     }
 
     fn valid_ecl(&self) -> bool {
-        ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"].contains(&&*self.ecl)
+        ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"].contains(&self.ecl.as_str())
     }
 
     fn valid_pid(&self) -> bool {
