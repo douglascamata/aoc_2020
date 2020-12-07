@@ -4,7 +4,7 @@ use std::fs::read_to_string;
 fn main() {
     // I got curious about comparing the performances of borrowing and not-borrowing so I
     // implemented both functions and a very rudimentar timer.
-    let file = read_to_string("input.txt").expect("couldn't read input file");
+    let file = read_to_string("day1/input.txt").expect("couldn't read input file");
     let lines = file.lines().collect::<Vec<_>>();
     println!("Input size (in lines): {}", file.lines().count());
     println!("No borrow:");
@@ -18,7 +18,7 @@ fn main() {
 
 fn day1_no_borrow(lines: Vec<&str>, comb: usize) -> i32 {
     let start = std::time::Instant::now();
-    let numbers = lines.into_iter().map(|n| n.parse::<i32>().unwrap());
+    let numbers = lines.iter().map(|n| n.parse::<i32>().unwrap());
     let combinations = numbers.combinations(comb);
 
     let result = combinations

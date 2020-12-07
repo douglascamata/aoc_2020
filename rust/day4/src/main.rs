@@ -144,10 +144,10 @@ impl CredentialsValidator {
     }
 
     fn validate_batch(input: &str) -> Vec<bool> {
-        let mut validation_results: Vec<bool> = vec![];
+        let mut validation_results: Vec<bool> = Vec::new();
         let mut reader_acc = String::new();
 
-        for line in input.lines().map(|line| line.trim()) {
+        for line in input.lines().map(str::trim) {
             if line.is_empty() && !reader_acc.is_empty() {
                 let validation_result = Self { input: reader_acc }.is_valid();
                 validation_results.push(validation_result);

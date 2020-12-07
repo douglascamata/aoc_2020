@@ -10,9 +10,9 @@ fn main() {
 
     println!("max seat id: {}", seat_ids.iter().max().unwrap());
 
-    for seat_id in seat_ids {
-        let next_id_empty = seat_ids.iter().all(|id| *id != seat_id + 1);
-        let next_next_busy = seat_ids.iter().any(|id| *id == seat_id + 2);
+    for &seat_id in seat_ids {
+        let next_id_empty = seat_ids.iter().all(|&id| id != seat_id + 1);
+        let next_next_busy = seat_ids.iter().any(|&id| id == seat_id + 2);
         if next_id_empty && next_next_busy {
             eprintln!("Your seat id is: {}", seat_id + 1);
             break;

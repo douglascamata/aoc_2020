@@ -64,7 +64,7 @@ impl PasswordPolicy {
 }
 
 fn main() {
-    let file = read_to_string("input.txt").expect("couldn't read input file");
+    let file = read_to_string("day2/input.txt").expect("couldn't read input file");
     let lines = &file.lines().collect::<Vec<_>>();
 
     let start = std::time::Instant::now();

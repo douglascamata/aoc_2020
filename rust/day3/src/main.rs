@@ -8,7 +8,7 @@ struct RingBuffer<T> {
 
 impl RingBuffer<char> {
     fn from_string(input: &str) -> Self {
-        let input_list = input.chars().collect::<Vec<char>>();
+        let input_list: Vec<char> = input.chars().collect();
         RingBuffer { array: input_list }
     }
 }
@@ -52,7 +52,7 @@ impl Toboggan {
             .iter()
             .map(|line| line.trim())
             .filter(|&line| !line.is_empty())
-            .map(|line| RingBuffer::from_string(line))
+            .map(RingBuffer::from_string)
             .collect();
         Toboggan {
             pos_x: 0,
